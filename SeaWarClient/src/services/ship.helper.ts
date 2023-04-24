@@ -1,4 +1,4 @@
-import { EShipStatus, type IShip } from "@/models/IShip.model";
+import { EGameStatus, type IShip } from "@/models/IShip.model";
 import type { ICoordinateSimple } from "@/models/dto.model";
 export class ShipHelper {
   constructor(
@@ -12,10 +12,15 @@ export class ShipHelper {
     const sortedShips = [...this.ships].sort(
       (a, b) => a.deltaCoordinates.length - b.deltaCoordinates.length
     );
-
+    sortedShips.forEach((ship) => {
+      ship.setNewCoordinate({
+        x: -999,
+        y: -999,
+      });
+    });
     while (sortedShips.length) {
       const maxedShip = sortedShips.pop();
-      maxedShip.setStatus(EShipStatus.Move);
+      maxedShip.setStatus(EGameStatus.Move);
       let countShipSetPoth = 0;
       let randomCoordinate = this.getRandomCoordinate();
       while (!maxedShip.canMove(randomCoordinate, this.ships)) {
@@ -26,7 +31,7 @@ export class ShipHelper {
         }
       }
       maxedShip.setNewCoordinate(randomCoordinate);
-      maxedShip.setStatus(EShipStatus.None);
+      maxedShip.setStatus(EGameStatus.None);
     }
     return this.ships;
   }

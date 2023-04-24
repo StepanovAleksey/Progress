@@ -14,12 +14,10 @@ namespace Contracts.Enums
         /// </summary>
         Error = -1,
 
-        Unknown = 0,
-
         /// <summary>
         /// Промах 
         /// </summary>
-        Miss = 1,
+        Miss = 0,
 
         /// <summary>
         /// Попадание в корабль

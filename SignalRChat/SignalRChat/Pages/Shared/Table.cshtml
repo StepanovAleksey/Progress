@@ -1,0 +1,136 @@
+﻿@using SignalRChat.Models
+@using System.Text
+@using System.Linq
+
+@{
+    ViewData["Title"] = null;
+
+    bool CheckBorder(Ship[] ships, int x, int y)
+    {
+        bool result = false;
+        foreach (var ship in ships)
+        {
+            result = ship.CheckIntersection(new Ship(new Point(x,y),  1, true) );
+            if (result) return result;
+        }
+        return result;
+    }
+    char[] alphavite = {
+                                ' ', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З',
+                                'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р',
+                                'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ',
+                                'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я'
+        };
+    var temp = new ShipGenerator().Generate();
+
+    string[] ships = new string[10];
+    for (var i=0; i<temp.Length; i++)
+    {
+        var shipBuilder = new StringBuilder();
+        if (temp[i].Lenght == 1) 
+        {
+            shipBuilder.Append($"<td class=\"batelship_field_td start_td_act p-0\" pointX=\"{temp[i].Start.X}\" pointY=\"{temp[i].Start.Y}\" name=\"ship{i}\" draggable=\"true\"><div class=\"field\" pointX=\"{temp[i].Points[0].X}\" pointY=\"{temp[i].Points[0].Y}\"></div></td>");
+        }
+        else
+        {
+            if (temp[i].IsHorizontal)
+            {
+                shipBuilder.Append($"<td class=\"batelship_field_td d-felx p-0 start_td_act\" colspan=\"{temp[i].Lenght}\"  name=\"ship{i}\" draggable=\"true\">");
+                foreach (var point in temp[i].Points)
+                {
+                    shipBuilder.Append($"<div class=\"field\"  pointX=\"{point.X}\" pointY=\"{point.Y}\"></div>");
+                }
+                shipBuilder.Append("</td>");
+            }
+            else
+            {
+                shipBuilder.Append($"<td class=\"batelship_field_td start_td_act p-0\" rowspan=\"{temp[i].Lenght}\" name=\"ship{i}\" draggable=\"true\">");
+                foreach (var point in temp[i].Points)
+                {
+                    shipBuilder.Append($"<div class=\"field\"  pointX=\"{point.X}\" pointY=\"{point.Y}\"></div>");
+                }
+                shipBuilder.Append("</td>");
+            }            
+        }
+        ships[i] = shipBuilder.ToString();
+    }
+
+}
+
+<div class="p-6">
+   <table class="battleship-table-1">
+        <thead>
+            <tr>
+          @{
+               for (var i = 0; i < 11; i++)
+               {
+                    <th class="batelship_field">@alphavite[i]</th>
+                }
+            }
+            </tr>
+        </thead>
+        <tbody>
+             @{
+                for (var i = 1; i < 11; i++)
+                {
+                        <tr>
+                            <th class="batelship_field">@i</th>
+                            @for (var j = 0; j < 10; j++)
+                            {
+                                var number = temp.Select((item, index) => new { item, index })                           
+                                         .FirstOrDefault(p => p.item.Points.Contains(new Point(j, i - 1)))?.index;
+                            // .FirstOrDefault(p => p.item.Start.X == j && p.item.Start.Y == (i - 1))?.index;
+                            if (!(number is null))
+                            {
+                                if (temp[(int)number].Start.X == j && temp[(int)number].Start.Y == (i - 1))
+                                {
+                                    @Html.Raw(ships[(int)number])
+                                    if (temp[(int)number].Lenght > 1 && temp[(int)number].IsHorizontal)
+                                    {
+                                        j = j + temp[(int)number].Lenght - 1;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                string tt = "";
+                                bool check = CheckBorder(temp, j, i - 1);
+                                @if (!check)
+                                {
+                                    tt = "droppable";
+                                }
+                                <td class="batelship_field_td start_td @tt" name="empty" pointX="@j" pointY="@(i - 1)"> </td>
+                            }                               
+                        }
+                        </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div class="p-6">
+    <table class="battleship-table">
+        <thead>
+            @{
+                for (var i = 0; i < 11; i++)
+                {
+                    <th class="batelship_field">@alphavite[i]</th>
+                }
+            }
+        </thead>
+        <tbody>
+            @{
+                for (var i = 1; i < 11; i++)
+                {
+                        <tr>
+                            <th class="batelship_field">@i</th>
+                            @for (var j = 0; j < 10; j++)
+                        {
+                                <td class="batelship_field_td"><div class="start_td_na"></div></td>
+                        }
+                        </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

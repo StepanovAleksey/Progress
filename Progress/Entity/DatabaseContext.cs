@@ -14,7 +14,6 @@ public class DatabaseContext:DbContext
     public DbSet<Game> Games { get; set; }
     public DbSet<GameStatistic> GameStatistics { get; set; }
     public DbSet<User> Users { get; set; }
-    public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<BattelField> BattelFields { get; set; }
     public DbSet<UserStatistic> UserStatistics { get; set; }
 
@@ -29,7 +28,6 @@ public class DatabaseContext:DbContext
             o.HasIndex(i => i.Email).IsUnique();
             o.Property(p => p.IpAdress).IsRequired(false);
         });
-        modelBuilder.Entity<RefreshToken>().HasOne<User>(p => p.User);
         modelBuilder.Entity<UserStatistic>();
     }
 }

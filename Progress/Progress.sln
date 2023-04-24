@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entity", "Entity\Entity.csproj", "{17B656E2-FAC6-421A-8B94-3BD52A062FF0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{FD44FA81-1CC1-4EC6-9F3A-D173B73821D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIGateway", "APIGateway\APIGateway.csproj", "{FD44FA81-1CC1-4EC6-9F3A-D173B73821D7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "View", "View\View.csproj", "{E4EB429C-6A11-4368-851D-D6D9C2637B3E}"
 EndProject
@@ -21,11 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth", "Auth\Auth.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserStatistic", "UserStatistic\UserStatistic.csproj", "{E39FF2AA-9459-46D1-A0DE-4586CE4FAA99}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{551840BC-FFC1-41C3-9790-5290E1ECF297}"
-	ProjectSection(SolutionItems) = preProject
-		Auth\appsettings.Development.json = Auth\appsettings.Development.json
-		Auth\appsettings.json = Auth\appsettings.json
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQLibrary", "..\Rabbit\RabbitMQLibrary\RabbitMQLibrary.csproj", "{947DA766-52B6-4E91-8310-EE7F988F5CC4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalRChat", "..\SignalRChat\SignalRChat\SignalRChat.csproj", "{8A6AC96F-5B5B-4A7E-9D79-F41F4F68FC08}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogService", "LogService\LogService.csproj", "{DFE3B14E-C35D-48CC-BA63-7A79BB747F4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +65,18 @@ Global
 		{E39FF2AA-9459-46D1-A0DE-4586CE4FAA99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E39FF2AA-9459-46D1-A0DE-4586CE4FAA99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E39FF2AA-9459-46D1-A0DE-4586CE4FAA99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{947DA766-52B6-4E91-8310-EE7F988F5CC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{947DA766-52B6-4E91-8310-EE7F988F5CC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{947DA766-52B6-4E91-8310-EE7F988F5CC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{947DA766-52B6-4E91-8310-EE7F988F5CC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A6AC96F-5B5B-4A7E-9D79-F41F4F68FC08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A6AC96F-5B5B-4A7E-9D79-F41F4F68FC08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A6AC96F-5B5B-4A7E-9D79-F41F4F68FC08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A6AC96F-5B5B-4A7E-9D79-F41F4F68FC08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFE3B14E-C35D-48CC-BA63-7A79BB747F4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFE3B14E-C35D-48CC-BA63-7A79BB747F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFE3B14E-C35D-48CC-BA63-7A79BB747F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFE3B14E-C35D-48CC-BA63-7A79BB747F4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

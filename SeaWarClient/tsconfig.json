@@ -6,7 +6,9 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "target": "ES2017",
+    "lib": ["es2017", "DOM"]
   },
 
   "references": [

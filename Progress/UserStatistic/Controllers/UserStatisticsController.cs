@@ -2,30 +2,33 @@
 using Entity.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.Entity;
+using System.Security.Cryptography.Pkcs;
+using UserStatistic.API;
 using View.Models.In;
 using View.Models.Out;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+// For more information on enabling Web APIGateway for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace UserStatistic.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class UserStatisticsController : ControllerBase
     {
-        private readonly DatabaseContext _context;
+        private UserStatisticAPI API;
 
         public UserStatisticsController(DatabaseContext context)
         {
-            _context = context;
+            API = new UserStatisticAPI(context);
         }
 
 
-        // GET: api/<GetTop100>
+        // GET: api/<GetTop10>
         [HttpGet]
-        public async Task<ActionResult<List<OutUserStatistics>>> GetTop100()
+        public /*async Task<ActionResult<List<OutUserStatistics>>>*/IActionResult GetTop10()
         {
-            var userTop = _context.UserStatistics.AsNoTracking().Take(100).OrderByDescending(f => f.Rating).ToList();
+            var userTop = API.GetTop(10);
+
             if (userTop == null)
                 return NotFound();
 
@@ -34,44 +37,48 @@ namespace UserStatistic.Controllers
 
         // GET api/<Get>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<OutUserStatistics>> Get(long id)
+        public /*async Task<ActionResult<OutUserStatistics>>*/IActionResult Get(long id)
         {
-            var userStatistic = await _context.UserStatistics.AsNoTracking().FirstOrDefaultAsync(f => f.UserId == id);
-            if (userStatistic == null)
+            var result = API.Get(id);
+            if (result == null)
                 return NotFound();
-
-            var result = new OutUserStatistics
-            {
-                UserId = userStatistic.UserId,
-                Level = userStatistic.Level,
-                Rating = userStatistic.Rating,
-                IsPrivileged = userStatistic.IsPrivileged,
-                GameCount = userStatistic.GameCount,
-                WinGames = userStatistic.WinGames,
-                LossGames = userStatistic.LossGames
-            };
 
             return Ok(result);
         }
 
         // POST api/<UserStatisticsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Create([FromBody] InUserStatistics userStatistics)
         {
+            var result = API.CreateUserStatistic(userStatistics);
+
+            if (!result)
+                return NotFound();
+
+            return Ok(result);
+
         }
 
         // PUT api/<UpdatePrivileged>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePrivileged(long id, bool privileg)
+        public /*async Task<IActionResult>*/IActionResult UpdatePrivileged(long id, bool privileg)
         {
-            var userPrivileged = await _context.UserStatistics.FirstOrDefaultAsync(f => f.UserId == id);
-            if (userPrivileged == null)
-                return new NotFoundResult();
+            if (!API.UpdatePrivileged(id, privileg))
+                return NotFound();
 
-            userPrivileged.IsPrivileged = privileg;
+            Task<bool> task = API.UpdateRatingGameAsync(id);
+            if (!task.Result)//не забываем изменить статистику по игроку
+                return NoContent();
 
-            await _context.SaveChangesAsync();
+            return Ok();
+        }
 
+        // PUT api/UpdateUserStatistic
+        [HttpPut]
+        public IActionResult UpdateUserStatistic([FromBody] InUserStatistics userStatistics)
+        {
+            if (!API.UpdateUserStatistic(userStatistics))
+                return NoContent();
 
             return Ok();
         }

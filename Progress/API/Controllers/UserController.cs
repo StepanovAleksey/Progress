@@ -3,6 +3,7 @@ using Entity;
 using Entity.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using View.Models.Out;
 using In = View.Models.In;
 using Out = View.Models.Out;
 
@@ -21,24 +22,6 @@ public class UserController : ControllerBase
         _context = context;
     }
 
-    [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Create(In.InUserView inUserView)
-    {
-        var dbModel = new User
-        {
-            Name = inUserView.Name,
-            Email = inUserView.Email,
-            IpAdress = inUserView.IpAdress,
-            Status = inUserView.Status
-        };
-        _context.Users.Add(dbModel);
-        await _context.SaveChangesAsync();
-
-        return Created(nameof(dbModel), new { id = dbModel.Id });
-    }
-    
     [HttpGet("{id:long}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -56,5 +39,23 @@ public class UserController : ControllerBase
             Role = user.Role
         };
         return Ok(result);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Create(In.InUserView inUserView)
+    {
+        var dbModel = new User
+        {
+            Name = inUserView.Name,
+            Email = inUserView.Email,
+            IpAdress = inUserView.IpAdress,
+            Status = inUserView.Status
+        };
+        _context.Users.Add(dbModel);
+        await _context.SaveChangesAsync();
+
+        return Created(nameof(dbModel), new { id = dbModel.Id });
     }
 }

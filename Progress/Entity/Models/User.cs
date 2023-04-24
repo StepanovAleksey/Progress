@@ -25,10 +25,7 @@ public class User
     
     [Column("status"), Required]
     public Status Status { get; set; }
-    
-    [Column("role"), Required]
-    public Role Role { get; set; }
-    
+
     [Column("password_hash"), Required]
     public byte[] PasswordHash { get; set; }
 
@@ -41,10 +38,4 @@ public enum Status
     Active,
     Unactive,
     InGame
-}
-public enum Role
-{
-    User,
-    Admin,
-    Server
 }

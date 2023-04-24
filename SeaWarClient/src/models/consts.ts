@@ -40,3 +40,16 @@ export const SAFE_DELTA_AREA: Array<ICoordinateSimple> = [
 ];
 export const HORIZONTAL_AREA_LENGTH = 10;
 export const VERTICAL_AREA_LENGTH = 10;
+export const LYTERAL_COORDINATE_RU = [
+  "А",
+  "Б",
+  "В",
+  "Г",
+  "Д",
+  "Е",
+  "Ё",
+  "Ж",
+  "З",
+  "И",
+];
+export const API_BASE_URL = "https://localhost:7017";

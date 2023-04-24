@@ -1,6 +1,6 @@
 ﻿using Contracts.DTO;
-using Contracts.Enums;
 using GameSession.Models;
+using GameSession.Models.Gamers;
 using GameSession.Services;
 using Microsoft.AspNetCore.SignalR;
 
@@ -8,52 +8,63 @@ namespace GameSession.Hubs
 {
     public class GameHub : Hub
     {
-        static Queue<Gamer> userGameRadyToGameConnectIds = new Queue<Gamer>();
-
         public GameManager GameManager { get; }
 
         public GameHub(GameManager gameManager)
         {
             GameManager = gameManager;
         }
+
         public async override Task OnConnectedAsync()
         {
             await Clients.Caller.SendAsync("InitConnection", Context.ConnectionId);
         }
 
+        public async override Task OnDisconnectedAsync(Exception? exception)
+        {
+            GameManager.RemoveGamer(Context.ConnectionId);
+        }
+
+        /// <summary>
+        /// старт игры с живым игроком
+        /// </summary>
         public async Task GameStart(MessageDto<IEnumerable<ShipDto>> msg)
         {
-
             await Answer(new MessageDto<bool>(msg.Uid, true));
-            var currentGamer = new Gamer(Context.ConnectionId, msg.Payload);
-            userGameRadyToGameConnectIds.TryDequeue(out var otherGamer);
-            /// Начинаем игру
-            if (otherGamer != null)
-            {
-                var game = GameManager.AddNewGame(currentGamer, otherGamer);
-                InitGameDto initGame = new InitGameDto()
-                {
-                    OtherGamerConnectionId = Context.ConnectionId,
-                    ShootGamerConnectionId = game.GetShooterGamer().ConnetcionId
-                };
-                await Groups.AddToGroupAsync(Context.ConnectionId, game.Uid.ToString());
-                await Groups.AddToGroupAsync(otherGamer.ConnetcionId, game.Uid.ToString());
-                await Clients.Client(otherGamer.ConnetcionId).SendAsync("StartGame", initGame);
-                initGame.OtherGamerConnectionId = otherGamer.ConnetcionId;
-                await Clients.Caller.SendAsync("StartGame", initGame);
-            }
-            else
-            {
-                userGameRadyToGameConnectIds.Enqueue(currentGamer);
-            }
+            GameManager.RegisterGamer(new Gamer(Context.ConnectionId, msg.Payload));
         }
 
+        /// <summary>
+        /// старт игры с ботом
+        /// </summary>
+        public async Task GameStartWithBot(MessageDto<IEnumerable<ShipDto>> msg)
+        {
+            await Answer(new MessageDto<bool>(msg.Uid, true));
+            GameManager.RegisterGamer(new Gamer(Context.ConnectionId, msg.Payload));
+            GameManager.RegisterBotGamer(new GamerBot(msg.Payload));
+        }
+
+
+        /// <summary>
+        /// выстрел игрока
+        /// </summary>
         public async Task Shoot(MessageDto<CoordinateSimple> msg)
         {
-            var result = GameManager.EvolveShoot(Context.ConnectionId, msg.Payload);
-            await Clients.Group(result.GameUid.ToString()).SendAsync("ResultShoot", msg.CreateAnswer(result));
+            await GameManager.EvolveShoot(Context.ConnectionId, msg.Payload);
         }
 
+        /// <summary>
+        /// выставляем сопоставление connetionId Id пользователю
+        /// </summary>
+        public Task SetUserId(MessageDto<long> msg)
+        {
+            GameManager.SetGamerEntityId(Context.ConnectionId, msg.Payload);
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// ответ на запрос
+        /// </summary>
         private async Task Answer<T>(MessageDto<T> msg)
         {
             await Clients.Caller.SendAsync("Answer", msg);

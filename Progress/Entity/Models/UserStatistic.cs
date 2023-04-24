@@ -11,32 +11,32 @@ namespace Entity.Models
     [Table("UserStatistic", Schema = "user")]
     public class UserStatistic
     {
-        [Column("id"), Required]
+        [Column("Id"), Required]
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        [Column("userid"), Required]
+        [Column("UserId"), Required]
         public long UserId { get; set; }
 
-        [Column("level"), Required]
+        [Column("Level"), Required]
         public Level Level { get; set; }
 
-        [Column("rating")]
+        [Column("Rating")]
         public int Rating { get; set; }
 
-        [Column("isprivileged")]
+        [Column("IsPrivileged")]
         public bool IsPrivileged { get; set; }
 
-        [Column("gamecount")]
+        [Column("GameCount")]
         public int GameCount { get; set; }
 
         /// <summary>
         /// TODO: По оканчание игры нужно перехватывать событие от сервиса GameStatistics и обновлять данные значения
         /// </summary>
-        [Column("wingames"), Required]
+        [Column("WinGames"), Required]
         public int WinGames { get; set; }
 
-        [Column("lossgames"), Required]
+        [Column("LossGames"), Required]
         public int LossGames { get; set; }
     }
 

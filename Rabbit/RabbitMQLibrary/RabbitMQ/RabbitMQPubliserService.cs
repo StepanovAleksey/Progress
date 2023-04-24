@@ -36,7 +36,7 @@ namespace RabbitMQLibrary
 
                     var body = Encoding.UTF8.GetBytes(message);
 
-                    channel.BasicPublish(exchange: "",
+                    channel.BasicPublish(exchange: string.Empty,
                                    routingKey: queueName,
                                    basicProperties: null,
                                    body: body);

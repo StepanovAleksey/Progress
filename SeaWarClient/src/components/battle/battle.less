@@ -1,17 +1,32 @@
-.battle-table {
-  width: 400px;
-  height: 400px;
-  min-width: 400px;
-  min-height: 400px;
-  tr {
-    td {
-      border: 1px solid black;
+@size-coordibate: 35px;
+/** попадание */
+@shoot-color: red;
+/** промах */
+@miss-color: yellow;
+
+.battle {
+  min-width: 410px;
+
+  .grid {
+    .label {
+      width: @size-coordibate;
+      height: @size-coordibate;
+      margin: 1px;
+      font-size: 16px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-  }
-  .ship {
-    background-color: blueviolet;
-    &.move {
-      opacity: 0.6;
+    .col-fixed {
+      border: 1px solid black;
+      width: @size-coordibate;
+      height: @size-coordibate;
+      margin: 1px;
+
+      &.miss {
+        background-color: @miss-color;
+      }
     }
   }
 }

@@ -1,0 +1,69 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/Login",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7093
+        }
+      ],
+      "UpstreamPathTemplate": "/login",
+      "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "auth"
+    },
+    {
+      "DownstreamPathTemplate": "/api/User",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7093
+        }
+      ],
+      "UpstreamPathTemplate": "/registration",
+      "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "auth"
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/UserStatistics",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7045
+        }
+      ],
+      "UpstreamPathTemplate": "/user_statistics",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "statistic"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7017"
+  },
+  "SwaggerEndPoints": [
+    {
+      "Key": "auth",
+      "Config": [
+        {
+          "Name": "Auth API",
+          "Version": "v1",
+          "Url": "https://localhost:7093/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "statistic",
+      "Config": [
+        {
+          "Name": "UserStatistic API",
+          "Version": "v1",
+          "Url": "https://localhost:7045/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ]
+}

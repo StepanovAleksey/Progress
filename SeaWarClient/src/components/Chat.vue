@@ -1,5 +1,5 @@
 <template>
-    <div class="border v-100 h-100">
+    <div class="border v-100 h-full">
         Чат
     </div>
 </template>

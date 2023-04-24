@@ -1,0 +1,52 @@
+﻿@page
+@model IndexModel
+
+      <div class="text-center">
+       <!-- <section class="p-0 w-100" style="background-color: #eee; border-radius: .5rem .5rem 0 0;">-->
+      <div class="row d-flex justify-content-center" style="background-color: #eee;" >
+                <div class="col-3 p-0">
+                    <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center p-1" style="border-top: 4px solid #ffa900; height:43px;">
+                             <h5 class="m-0">Чат</h5>
+                             <div class="m-0 p-0 " id="namePill"></div>
+                        </div>
+                        <div class="card-body perfect-scrollbar ps ps--active-y" id="messagesList" data-mdb-perfect-scrollbar="true" style="overflow-y: auto; position: relative; height: 400px">
+                        </div>
+                        <div class="card-footer text-muted d-flex justify-content-start align-items-center p-1">
+                         <div class="input-group mb-0">
+                            <input type="text" class="form-control" id="messageInput" disabled="disabled" placeholder="Текст сообщения" aria-label="messageInput" messageInput aria-describedby="sendButton">
+                            <div class="input-group-append" id="button-addon">
+                                <button class="btn btn-warning" type="button" id="sendButton">Отправить</button>
+                            </div>                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="col-7 p-0">
+                <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center p-1" style="border-top: 4px solid #ffa900;height:43px;">
+                        <h5 class="m-0">Игра</h5>
+                    </div>
+                <div class="card-body d-flex justify-content-around align-items-center  m-0 p-0" style="overflow-y: auto; position: relative; height: 400px">
+                    @await Html.PartialAsync("Table")
+                </div>
+                </div>
+            </div>
+            <div class="col-2 p-0">
+                <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center p-1" style="border-top: 4px solid #ffa900; height:43px;">
+                        <h5 class="m-0">Счёт</h5>
+                    </div>
+                    <div class="card-body m-0 p-0" style="overflow-y: auto; position: relative; height: 400px">
+                        
+                    </div>
+                    <div class="card-footer text-muted d-flex justify-content-start align-items-center p-1">
+                        <button class="btn w-100 text-center btn-success" type="button" id="chatOnBtn">Войти в игру</button>
+                    <button class="btn w-100 text-center btn-danger" type="button" hidden="hidden" disabled="disabled" id="chatOffBtn">Покинуть игру</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+    <!--</section>-->
+
+</div>

@@ -1,5 +1,5 @@
 <template>
-    <div class="border v-100 h-100 timer">
+    <div class="border v-100 h-full timer">
         {{ secundsOut }}
     </div>
 </template>

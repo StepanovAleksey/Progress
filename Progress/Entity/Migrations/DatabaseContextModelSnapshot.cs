@@ -85,35 +85,6 @@ namespace Entity.Migrations
                     b.ToTable("GameStatistics", "data");
                 });
 
-            modelBuilder.Entity("Entity.Models.RefreshToken", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTimeOffset>("Expiration")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("expiration");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("token");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("refresh_tokens", "auth");
-                });
-
             modelBuilder.Entity("Entity.Models.User", b =>
                 {
                     b.Property<long>("Id")
@@ -147,10 +118,6 @@ namespace Entity.Migrations
                         .HasColumnType("bytea")
                         .HasColumnName("password_salt");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("integer")
-                        .HasColumnName("role");
-
                     b.Property<int>("Status")
                         .HasColumnType("integer")
                         .HasColumnName("status");
@@ -161,6 +128,48 @@ namespace Entity.Migrations
                         .IsUnique();
 
                     b.ToTable("users", "auth");
+                });
+
+            modelBuilder.Entity("Entity.Models.UserStatistic", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("GameCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("gamecount");
+
+                    b.Property<bool>("IsPrivileged")
+                        .HasColumnType("boolean")
+                        .HasColumnName("isprivileged");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("integer")
+                        .HasColumnName("level");
+
+                    b.Property<int>("LossGames")
+                        .HasColumnType("integer")
+                        .HasColumnName("lossgames");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("integer")
+                        .HasColumnName("rating");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("userid");
+
+                    b.Property<int>("WinGames")
+                        .HasColumnType("integer")
+                        .HasColumnName("wingames");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserStatistic", "user");
                 });
 
             modelBuilder.Entity("Entity.Models.BattelField", b =>
@@ -189,17 +198,6 @@ namespace Entity.Migrations
                         .IsRequired();
 
                     b.Navigation("Game");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Entity.Models.RefreshToken", b =>
-                {
-                    b.HasOne("Entity.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("User");
                 });

@@ -14,7 +14,7 @@ namespace PublisherRabbitTester
                 Password = "AtkBM4d1ytSJbIIMVtj6uVjdoBN4tz-O",
                 VirtualHost = "iyglhuaj",
                 HostName = "sparrow.rmq.cloudamqp.com",
-                QueueName = { "GameService", "Test" }
+                QueueName = { "GameService", "Test", "UserStatistic" }
             }; 
             IRabbitMQPubliserService mqService = new RabbitMQPubliserService(options);
             

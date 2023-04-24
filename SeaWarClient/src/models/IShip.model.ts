@@ -37,7 +37,7 @@ export class Coordinate extends CoordinateSimpleEqual implements ICoordinate {
   }
 }
 
-export enum EShipStatus {
+export enum EGameStatus {
   None = "None",
   Game = "Game",
   Move = "Move",
@@ -56,7 +56,7 @@ export interface IShip {
   /**
    * перемещаем на текущий момент
    */
-  status: EShipStatus;
+  status: EGameStatus;
 
   /**
    * Проверка вхождения координаты в корабль
@@ -88,13 +88,13 @@ export interface IShip {
    */
   isMove(): boolean;
 
-  setStatus(newStatus: EShipStatus): void;
+  setStatus(newStatus: EGameStatus): void;
 
   toDto(): IShipDto;
 }
 
 abstract class AShape implements IShip {
-  status = EShipStatus.None;
+  status = EGameStatus.None;
   public coordinates: Array<Coordinate>;
   /**
    *
@@ -103,9 +103,9 @@ abstract class AShape implements IShip {
    */
   constructor(
     public deltaCoordinates: Array<ICoordinateSimple>,
-    baseCoordinate: ICoordinateSimple
+    baseCoordinate?: ICoordinateSimple
   ) {
-    this.setNewCoordinate(baseCoordinate);
+    this.setNewCoordinate(baseCoordinate || new Coordinate(0, 0));
   }
 
   isSafeArea(coordinates: ICoordinateSimple): boolean {
@@ -134,10 +134,10 @@ abstract class AShape implements IShip {
   }
 
   isMove() {
-    return this.status === EShipStatus.Move;
+    return this.status === EGameStatus.Move;
   }
 
-  setStatus(newStatus: EShipStatus): void {
+  setStatus(newStatus: EGameStatus): void {
     this.status = newStatus;
   }
 
@@ -167,13 +167,13 @@ abstract class AShape implements IShip {
 }
 
 export class ShipOne extends AShape {
-  constructor(startCoordinate: Coordinate) {
+  constructor(startCoordinate?: Coordinate) {
     super([{ x: 0, y: 0 }], startCoordinate);
   }
 }
 
-export class ShipTwo extends AShape {
-  constructor(startCoordinate: Coordinate) {
+export class ShipTwoV1 extends AShape {
+  constructor(startCoordinate?: Coordinate) {
     super(
       [
         { x: 0, y: 0 },
@@ -184,8 +184,20 @@ export class ShipTwo extends AShape {
   }
 }
 
-export class ShipThreeTypeOne extends AShape {
-  constructor(startCoordinate: Coordinate) {
+export class ShipTwoV2 extends AShape {
+  constructor(startCoordinate?: Coordinate) {
+    super(
+      [
+        { x: 0, y: 0 },
+        { x: 0, y: 1 },
+      ],
+      startCoordinate
+    );
+  }
+}
+
+export class ShipThreeV1 extends AShape {
+  constructor(startCoordinate?: Coordinate) {
     super(
       [
         { x: 0, y: 0 },
@@ -196,8 +208,8 @@ export class ShipThreeTypeOne extends AShape {
     );
   }
 }
-export class ShipThreeTypeTwo extends AShape {
-  constructor(startCoordinate: Coordinate) {
+export class ShipThreeV2 extends AShape {
+  constructor(startCoordinate?: Coordinate) {
     super(
       [
         { x: 0, y: 0 },
@@ -210,7 +222,7 @@ export class ShipThreeTypeTwo extends AShape {
 }
 
 export class ShipFor extends AShape {
-  constructor(startCoordinate: Coordinate) {
+  constructor(startCoordinate?: Coordinate) {
     super(
       [
         { x: 0, y: 0 },
@@ -218,21 +230,21 @@ export class ShipFor extends AShape {
         { x: 0, y: -2 },
         { x: 1, y: -2 },
       ],
-      startCoordinate
+      startCoordinate || new Coordinate(0, 0)
     );
   }
 }
 
 export const SHIPS: Array<IShip> = [
-  new ShipOne(new Coordinate(0, 0)),
-  new ShipOne(new Coordinate(2, 0)),
-  new ShipOne(new Coordinate(4, 0)),
-  new ShipOne(new Coordinate(6, 0)),
-  new ShipOne(new Coordinate(8, 0)),
-  new ShipTwo(new Coordinate(0, 2)),
-  new ShipTwo(new Coordinate(4, 2)),
-  new ShipTwo(new Coordinate(4, 2)),
-  new ShipThreeTypeOne(new Coordinate(0, 4)),
-  new ShipThreeTypeTwo(new Coordinate(0, 4)),
-  new ShipFor(new Coordinate(0, 4)),
+  new ShipOne(),
+  new ShipOne(),
+  new ShipOne(),
+  new ShipOne(),
+  new ShipOne(),
+  new ShipTwoV1(),
+  new ShipTwoV2(),
+  new ShipTwoV2(),
+  new ShipThreeV1(),
+  new ShipThreeV2(),
+  new ShipFor(),
 ];
